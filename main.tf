@@ -247,8 +247,9 @@ resource "aws_iam_role_policy_attachment" "cloudformation_additional_policy_atta
 
 ### Serverless Deploy Policy ###
 resource "aws_iam_role" "deploy" {
+  count                 = var.create_deploy_iam_role ? 1 : 0
   name                  = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
-  assume_role_policy    = data.aws_iam_policy_document.assume_role_deploy.json
+  assume_role_policy    = var.deploy_assume_role_policy
   path                  = "/"
   description           = "Managed by Terraform"
   max_session_duration  = "3600"
@@ -256,53 +257,35 @@ resource "aws_iam_role" "deploy" {
 }
 
 resource "aws_iam_policy" "deploy" {
+  count  = var.create_deploy_iam_role || var.create_deploy_iam_user ? 1 : 0
   name   = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
   path   = "/"
   policy = data.aws_iam_policy_document.policy_deploy.json
 }
 
 resource "aws_iam_group" "deploy" {
-  name = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
+  count = length(var.deploy_group_users) > 0 ? 1 : 0
+  name  = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
 }
 
 resource "aws_iam_group_membership" "this" {
   count = length(var.deploy_group_users) > 0 ? 1 : 0
-  group = aws_iam_group.deploy.name
+  group = aws_iam_group.deploy[0].name
   name  = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
   users = var.deploy_group_users
 }
 
 resource "aws_iam_group_policy_attachment" "deploy" {
-  group      = aws_iam_group.deploy.name
-  policy_arn = aws_iam_policy.deploy.arn
+  count      = length(var.deploy_group_users) > 0 ? 1 : 0
+  group      = aws_iam_group.deploy[0].name
+  policy_arn = aws_iam_policy.deploy[0].arn
   depends_on = [aws_iam_policy.deploy]
 }
 
 resource "aws_iam_role_policy_attachment" "deploy" {
-  role       = aws_iam_role.deploy.name
-  policy_arn = aws_iam_policy.deploy.arn
-}
-
-data "aws_iam_policy_document" "assume_role_deploy" {
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
-
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "AWS"
-      identifiers = local.trusted_role_arns
-    }
-  }
+  count      = var.create_deploy_iam_role ? 1 : 0
+  role       = aws_iam_role.deploy[0].name
+  policy_arn = aws_iam_policy.deploy[0].arn
 }
 
 data "aws_iam_policy_document" "policy_deploy" {
@@ -457,14 +440,14 @@ resource "aws_iam_policy" "deploy_additional_policy" {
 
 resource "aws_iam_group_policy_attachment" "deploy_additional_policy_attachment" {
   count      = var.deploy_additional_policy != null ? 1 : 0
-  group      = aws_iam_group.deploy.name
+  group      = aws_iam_group.deploy[0].name
   policy_arn = aws_iam_policy.deploy_additional_policy[0].arn
   depends_on = [aws_iam_policy.deploy_additional_policy]
 }
 
 resource "aws_iam_role_policy_attachment" "deploy_additional_policy_attachment" {
   count      = var.deploy_additional_policy != null ? 1 : 0
-  role       = aws_iam_role.deploy.name
+  role       = aws_iam_role.deploy[0].name
   policy_arn = aws_iam_policy.deploy_additional_policy[0].arn
 }
 
@@ -482,7 +465,7 @@ resource "aws_iam_access_key" "deploy" {
 resource "aws_iam_user_policy_attachment" "deploy_iam" {
   count      = var.create_deploy_iam_user ? 1 : 0
   user       = aws_iam_user.deploy[0].name
-  policy_arn = aws_iam_policy.deploy.arn
+  policy_arn = aws_iam_policy.deploy[0].arn
 }
 
 resource "aws_iam_user_policy_attachment" "deploy_additional_policy_attachment_iam" {

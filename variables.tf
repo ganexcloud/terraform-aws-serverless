@@ -1,33 +1,27 @@
 variable "serverless_service_name" {
-  description = "Serverless name of service (function)"
+  description = "(Required) Serverless name of service (function)"
   type        = string
 }
 
 variable "serverless_stage" {
-  description = "Serverless stage (environment)"
+  description = "(Required) Serverless stage (environment)"
   type        = string
 }
 
-variable "trusted_role_arns" {
-  description = "(Optional) ARNs of AWS entities who can assume these role"
-  type        = list(string)
-  default     = []
-}
-
 variable "cloudformation_additional_policy" {
-  description = "(Optional) Cloudformation additional policy. This is a JSON formatted string."
+  description = "(Optional) Cloudformation additional policy."
   type        = string
   default     = null
 }
 
 variable "deploy_additional_policy" {
-  description = "(Optional) Deploy role additional policy. This is a JSON formatted string."
+  description = "(Optional) Deploy additional policy."
   type        = string
   default     = null
 }
 
 variable "lambda_additional_policy" {
-  description = "(Optional) Lambda role additional policy. This is a JSON formatted string."
+  description = "(Optional) Lambda role additional policy."
   type        = string
   default     = null
 }
@@ -38,8 +32,20 @@ variable "deploy_group_users" {
   default     = []
 }
 
-variable "create_deploy_iam_user" {
-  description = "(Optional) Cloudformation additional policy. This is a JSON formatted string."
+variable "create_deploy_iam_role" {
+  description = "(Optional) Create deploy iam role."
   type        = bool
   default     = false
+}
+
+variable "create_deploy_iam_user" {
+  description = "(Optional) Create deploy iam role."
+  type        = bool
+  default     = false
+}
+
+variable "deploy_assume_role_policy" {
+  description = "(Optional) Required if `create_deploy_iam_role` is true. The policy that grants an entity permission to assume the role."
+  type        = string
+  default     = null
 }
