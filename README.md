@@ -1,4 +1,7 @@
 <!-- BEGIN_TF_DOCS -->
+
+Get your serverless framework application to AWS, the right way.
+
 ## Requirements
 
 | Name | Version |

@@ -1,3 +1,8 @@
+/**
+  *
+  * Get your serverless framework application to AWS, the right way.
+  */
+
 ### Serverless Cloudformation ###
 resource "aws_iam_role" "default" {
   name                  = "${var.serverless_service_name}-${var.serverless_stage}-cloudformation"
