@@ -53,7 +53,7 @@ data "aws_iam_policy_document" "cloudformation" {
     ]
 
     resources = [
-      "arn:aws:cloudformation:us-east-1:${data.aws_caller_identity.current.account_id}:stack/${var.serverless_service_name}-${var.serverless_stage}*",
+      "arn:aws:cloudformation:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:stack/${var.serverless_service_name}-${var.serverless_stage}*",
     ]
   }
 
@@ -219,6 +219,18 @@ data "aws_iam_policy_document" "cloudformation" {
       "*",
     ]
   }
+
+  statement {
+    actions = [
+      "cloudwatch:PutMetricAlarm",
+      "cloudwatch:DeleteAlarm",
+    ]
+
+    resources = [
+      "arn:aws:cloudwatch:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:alarm:${var.serverless_service_name}-${var.serverless_stage}*",
+    ]
+  }
+
 }
 
 data "aws_iam_policy_document" "assume_role_cloudformation" {
