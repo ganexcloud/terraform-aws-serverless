@@ -49,3 +49,9 @@ variable "deploy_assume_role_policy" {
   type        = string
   default     = null
 }
+
+variable "cloudformation_assume_role_policy" {
+  description = "(Optional) Required if `create_deploy_iam_role` is true. The policy that grants an entity permission to assume the role."
+  type        = string
+  default     = null
+}
