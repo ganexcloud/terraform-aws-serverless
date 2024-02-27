@@ -6,7 +6,7 @@
 ### Serverless Cloudformation ###
 resource "aws_iam_role" "default" {
   name                  = "${var.serverless_service_name}-${var.serverless_stage}-cloudformation"
-  assume_role_policy    = data.aws_iam_policy_document.assume_role_cloudformation.json
+  assume_role_policy    = var.cloudformation_assume_role_policy == null ? data.aws_iam_policy_document.assume_role_cloudformation.json : var.cloudformation_assume_role_policy
   path                  = "/"
   description           = "Managed by Terraform"
   max_session_duration  = "3600"
@@ -451,7 +451,7 @@ resource "aws_iam_policy" "deploy_additional_policy" {
 }
 
 resource "aws_iam_group_policy_attachment" "deploy_additional_policy_attachment" {
-  count      = var.deploy_additional_policy != null ? 1 : 0
+  count      = var.deploy_additional_policy != null && length(var.deploy_group_users) > 0 ? 1 : 0
   group      = aws_iam_group.deploy[0].name
   policy_arn = aws_iam_policy.deploy_additional_policy[0].arn
   depends_on = [aws_iam_policy.deploy_additional_policy]
