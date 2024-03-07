@@ -183,9 +183,13 @@ data "aws_iam_policy_document" "cloudformation" {
       "lambda:RemovePermission",
       "lambda:InvokeFunction",
       "lambda:ListTags",
+      "lambda:ListAliases",
       "lambda:TagResource",
       "lambda:UntagResource",
-      "lambda:GetFunctionCodeSigningConfig"
+      "lambda:GetFunctionCodeSigningConfig",
+      "lambda:PutFunctionConcurrency",
+      "lambda:DeleteFunctionEventInvokeConfig",
+      "lambda:PutFunctionEventInvokeConfig"
     ]
 
     resources = [
@@ -366,7 +370,9 @@ data "aws_iam_policy_document" "policy_deploy" {
 
   statement {
     actions = [
-      "lambda:GetFunction"
+      "lambda:GetFunction",
+      "lambda:ListVersionsByFunction",
+      "lambda:ListAliases"
     ]
 
     resources = [
