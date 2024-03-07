@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.3](https://github.com/ganexcloud/terraform-aws-serverless/compare/v1.0.2...v1.0.3) (2024-03-07)
+
+
+### Bug Fixes
+
+* adjusting policies ([e6f9f14](https://github.com/ganexcloud/terraform-aws-serverless/commit/e6f9f143f0f64e3e42421e10e2fa0e557f85a13d))
+
 ### [1.0.2](https://github.com/ganexcloud/terraform-aws-serverless/compare/v1.0.1...v1.0.2) (2024-02-27)
 
 
