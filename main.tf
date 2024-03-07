@@ -81,9 +81,7 @@ data "aws_iam_policy_document" "cloudformation" {
 
     resources = [
       "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*",
-      "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*/*",
-      "arn:aws:s3:::${var.serverless_service_name}-*",
-      "arn:aws:s3:::${var.serverless_service_name}-*/*"
+      "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*/*"
     ]
   }
 
@@ -332,9 +330,7 @@ data "aws_iam_policy_document" "policy_deploy" {
 
     resources = [
       "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*",
-      "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*/*",
-      "arn:aws:s3:::${var.serverless_service_name}-*",
-      "arn:aws:s3:::${var.serverless_service_name}-*/*"
+      "arn:aws:s3:::${var.serverless_service_name}-${var.serverless_stage}*/*"
     ]
   }
 
