@@ -11,6 +11,7 @@ resource "aws_iam_role" "default" {
   description           = "Managed by Terraform"
   max_session_duration  = "3600"
   force_detach_policies = "true"
+  tags                  = var.tags
 }
 
 resource "aws_iam_policy" "default" {
@@ -18,6 +19,7 @@ resource "aws_iam_policy" "default" {
   policy      = data.aws_iam_policy_document.cloudformation.json
   path        = "/"
   description = "Managed by Terraform"
+  tags        = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
@@ -251,6 +253,7 @@ resource "aws_iam_policy" "cloudformation_additional_policy" {
   count  = var.cloudformation_additional_policy != null ? 1 : 0
   name   = "${var.serverless_service_name}-${var.serverless_stage}-cloudformation-additional-policy"
   policy = var.cloudformation_additional_policy
+  tags   = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cloudformation_additional_policy_attachment" {
@@ -268,6 +271,7 @@ resource "aws_iam_role" "deploy" {
   description           = "Managed by Terraform"
   max_session_duration  = "3600"
   force_detach_policies = "true"
+  tags                  = var.tags
 }
 
 resource "aws_iam_policy" "deploy" {
@@ -275,6 +279,7 @@ resource "aws_iam_policy" "deploy" {
   name   = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
   path   = "/"
   policy = data.aws_iam_policy_document.policy_deploy.json
+  tags   = var.tags
 }
 
 resource "aws_iam_group" "deploy" {
@@ -450,6 +455,7 @@ resource "aws_iam_policy" "deploy_additional_policy" {
   count  = var.deploy_additional_policy != null ? 1 : 0
   name   = "${var.serverless_service_name}-${var.serverless_stage}-deploy-additional-policy"
   policy = var.deploy_additional_policy
+  tags   = var.tags
 }
 
 resource "aws_iam_group_policy_attachment" "deploy_additional_policy_attachment" {
@@ -469,6 +475,7 @@ resource "aws_iam_user" "deploy" {
   count = var.create_deploy_iam_user ? 1 : 0
   name  = "${var.serverless_service_name}-${var.serverless_stage}-deploy"
   path  = "/"
+  tags  = var.tags
 }
 
 resource "aws_iam_access_key" "deploy" {
@@ -492,6 +499,7 @@ resource "aws_iam_user_policy_attachment" "deploy_additional_policy_attachment_i
 resource "aws_iam_role" "lambda" {
   name               = "${var.serverless_service_name}-${var.serverless_stage}-${data.aws_region.current.name}-lambdaRole"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+  tags               = var.tags
 }
 
 data "aws_iam_policy_document" "lambda_assume_role" {
@@ -508,6 +516,7 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 resource "aws_iam_policy" "lambda" {
   name   = "${var.serverless_service_name}-${var.serverless_stage}-lambda-execution"
   policy = data.aws_iam_policy_document.lambda.json
+  tags   = var.tags
 }
 
 data "aws_iam_policy_document" "lambda" {
@@ -554,4 +563,5 @@ resource "aws_iam_role_policy_attachment" "lambda_additional_policy_attachment" 
 resource "aws_s3_bucket" "this" {
   bucket = "${var.serverless_service_name}-${var.serverless_stage}-${data.aws_region.current.name}-serverless"
   acl    = "private"
+  tags   = var.tags
 }
