@@ -142,6 +142,7 @@ data "aws_iam_policy_document" "cloudformation" {
     ]
 
     resources = [
+      "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.serverless_service_name}-${var.serverless_stage}-*",
       "arn:aws:logs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.serverless_service_name}-${var.serverless_stage}*:log-stream:*",
     ]
   }
