@@ -134,6 +134,11 @@ data "aws_iam_policy_document" "cloudformation" {
       "logs:DescribeLogStreams",
       "logs:FilterLogEvents",
       "logs:PutRetentionPolicy",
+      "logs:TagLogGroup",
+      "logs:UntagLogGroup",
+      "logs:UntagResource",
+      "logs:TagResource",
+      "logs:ListTagsForResource"
     ]
 
     resources = [
