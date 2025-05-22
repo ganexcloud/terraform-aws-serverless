@@ -55,3 +55,9 @@ variable "cloudformation_assume_role_policy" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  description = "(Optional) A map of tags to assign to the resources."
+  type        = map(string)
+  default     = {}
+}
