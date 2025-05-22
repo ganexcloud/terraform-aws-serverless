@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### [1.0.7](https://github.com/ganexcloud/terraform-aws-serverless/compare/v1.0.6...v1.0.7) (2025-05-22)
+
+
+### Bug Fixes
+
+* adjusting cloudformation iam policy ([cbc1e3c](https://github.com/ganexcloud/terraform-aws-serverless/commit/cbc1e3c7548dcbbb0fc691d7b9770b261fa65ab0))
+
 ### [1.0.6](https://github.com/ganexcloud/terraform-aws-serverless/compare/v1.0.5...v1.0.6) (2025-05-22)
 
 
